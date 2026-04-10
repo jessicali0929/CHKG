@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>《史记》知识图谱 · 全景洞察 | 汉 | 司马迁</title>
+    <!-- 引入 Chart.js 轻量图表库 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- 字体与布局优化 -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5ede0;  /* 仿古宣纸色 */
+            font-family: 'Segoe UI', 'Roboto', 'Noto Sans', system-ui, '华文楷书', 'Microsoft YaHei', serif;
+            color: #2c2418;
+            padding: 2rem 1.5rem;
+        }
+
+        /* 主容器，类古籍排版 */
+        .presentation {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* 每一页幻灯片风格 (滚动式) */
+        .slide {
+            background: #fffef7;
+            border-radius: 2rem;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.2);
+            margin-bottom: 2.5rem;
+            padding: 2rem 2rem 2.5rem;
+            transition: all 0.2s;
+            border: 1px solid #e9dbc9;
+        }
+
+        .slide-header {
+            border-left: 8px solid #b45f2b;
+            padding-left: 1.2rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .slide-header h2 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #4a2c14;
+        }
+
+        .slide-header p {
+            color: #7a5a3a;
+            margin-top: 0.3rem;
+            font-size: 0.95rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.8rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.8rem;
+        }
+
+        .stat-card {
+            background: #faf6ef;
+            border-radius: 1.5rem;
+            padding: 1.2rem 1rem;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+            border-bottom: 3px solid #dbb87c;
+        }
+
+        .stat-number {
+            font-size: 2.7rem;
+            font-weight: 800;
+            color: #8b5a2b;
+            line-height: 1.2;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: #4c3a28;
+            letter-spacing: 1px;
+            margin-top: 0.5rem;
+        }
+
+        .entity-badge {
+            display: inline-block;
+            background: #e9dbc9;
+            padding: 0.3rem 0.9rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            margin: 0.2rem;
+            font-weight: 500;
+        }
+
+        .top-entity-list {
+            list-style: none;
+            padding: 0;
+        }
+        .top-entity-list li {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px dashed #e2d4c2;
+            padding: 0.7rem 0;
+            font-size: 1rem;
+        }
+        .top-entity-list .name {
+            font-weight: 600;
+        }
+        .top-entity-list .count {
+            background: #e5d5bd;
+            border-radius: 30px;
+            padding: 0.1rem 0.8rem;
+            font-weight: bold;
+        }
+
+        .footnote {
+            font-size: 0.75rem;
+            text-align: center;
+            color: #9b7b5c;
+            margin-top: 2rem;
+            border-top: 1px solid #e2d0bc;
+            padding-top: 1rem;
+        }
+
+        .chart-container {
+            max-height: 300px;
+            margin: 0 auto;
+        }
+
+        hr {
+            margin: 1rem 0;
+            border-color: #e7daca;
+        }
+
+        @media (max-width: 780px) {
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            .slide {
+                padding: 1.5rem;
+            }
+        }
+
+        .insight-text {
+            background: #f0e7db;
+            padding: 1rem 1.5rem;
+            border-radius: 2rem;
+            font-style: italic;
+            margin: 1rem 0;
+        }
+        .sigil {
+            font-family: monospace;
+            background: #2c2418;
+            color: #f5e1b0;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+<div class="presentation">
+    <!-- 扉页 slide -->
+    <div class="slide">
+        <div style="text-align: center; margin: 1rem 0 1.5rem;">
+            <span style="font-size: 3rem;">📜</span>
+            <h1 style="font-size: 2.8rem; margin: 0.5rem 0; color:#3d2a1a;">《史记》知识图谱</h1>
+            <p style="font-size: 1.2rem; color: #6c4f2e;">太史公笔下 · 两千余年人物、地志、礼法、天象的网状世界</p>
+            <div style="margin-top: 1rem;">
+                <span class="entity-badge">⭐ 实体总数 2,359</span>
+                <span class="entity-badge">🔗 关系总数 1,783</span>
+                <span class="entity-badge">📖 22 类实体</span>
+            </div>
+        </div>
+        <div class="insight-text">
+            “究天人之际，通古今之变，成一家之言。” —— 从帝王将相到礼乐星象，知识图谱揭示《史记》的磅礴结构。
+        </div>
+        <div style="text-align: center; margin-top: 1.2rem;">
+            <span class="sigil">基于CSV构建 | 实体关系网络</span>
+        </div>
+    </div>
+
+    <!-- 统计概览 slide -->
+    <div class="slide">
+        <div class="slide-header">
+            <h2>📊 图谱宏观总览</h2>
+            <p>实体类型分布 · 核心连通性指标</p>
+        </div>
+        <div class="grid-2" style="margin-bottom: 1rem;">
+            <div class="stat-card">
+                <div class="stat-number">2,359</div>
+                <div class="stat-label">总实体数</div>
+                <div style="font-size:0.8rem; margin-top:0.5rem;">覆盖人物、地点、礼制等22类</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">1,783</div>
+                <div class="stat-label">关系总数</div>
+                <div style="font-size:0.8rem;">平均每个实体0.76条关系</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">747</div>
+                <div class="stat-label">👥 人物实体</div>
+                <div>占比 31.6% · 最活跃类型</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">351</div>
+                <div class="stat-label">📍 地点实体</div>
+                <div>城邑、山河、关塞</div>
+            </div>
+        </div>
+        <div class="grid-3">
+            <div class="stat-card"><div class="stat-number">218</div><div class="stat-label">🎭 仪式·宗教实践</div></div>
+            <div class="stat-card"><div class="stat-number">212</div><div class="stat-label">📅 年代标记</div></div>
+            <div class="stat-card"><div class="stat-number">183</div><div class="stat-label">👑 君主头衔</div></div>
+            <div class="stat-card"><div class="stat-number">146</div><div class="stat-label">📚 经典文献/注释</div></div>
+            <div class="stat-card"><div class="stat-number">133</div><div class="stat-label">⚙️ 官职体系</div></div>
+            <div class="stat-card"><div class="stat-number">108</div><div class="stat-label">🏛️ 国家/政权</div></div>
+        </div>
+        <div class="footnote">注：实体类型包含政治事件(82)、军事冲突(43)、天文现象(72)等，展现多维历史视角。</div>
+    </div>
+
+    <!-- 实体类型比例（饼图 + 重要排行） -->
+    <div class="slide">
+        <div class="slide-header">
+            <h2>🏷️ 实体类型构成</h2>
+            <p>Top 8 类型占比及代表性实体</p>
+        </div>
+        <div class="grid-2">
+            <div class="chart-container">
+                <canvas id="entityTypeChart" width="400" height="300" style="max-width:100%; height:auto;"></canvas>
+            </div>
+            <div>
+                <h4 style="margin-bottom: 0.8rem;">📌 高频类型精选</h4>
+                <ul class="top-entity-list">
+                    <li><span class="name">👤 人物</span><span class="count">747</span></li>
+                    <li><span class="name">🏞️ 地点</span><span class="count">351</span></li>
+                    <li><span class="name">🙏 仪式/宗教实践</span><span class="count">218</span></li>
+                    <li><span class="name">⌛ 年代标记</span><span class="count">212</span></li>
+                    <li><span class="name">👑 君主头衔</span><span class="count">183</span></li>
+                    <li><span class="name">📖 经典文献</span><span class="count">146</span></li>
+                    <li><span class="name">🏢 官职</span><span class="count">133</span></li>
+                    <li><span class="name">🌏 国家</span><span class="count">108</span></li>
+                </ul>
+                <div class="insight-text" style="margin-top: 1rem; font-size:0.85rem;">
+                    💡 人物占近三分之一，反映《史记》纪传体核心；仪式、星象等呈现天人感应思想。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 中心枢纽：最高度实体（出/入关系）-->
+    <div class="slide">
+        <div class="slide-header">
+            <h2>🔗 网络枢纽 · 最关联实体</h2>
+            <p>出度最高 & 入度最高——知识图谱中的“历史引力”</p>
+        </div>
+        <div class="grid-2">
+            <div class="stat-card">
+                <div class="stat-number" style="font-size:2rem;">汉</div>
+                <div class="stat-label">🌟 连出关系最多的实体</div>
+                <div style="margin: 0.6rem 0;"><span class="entity-badge">81条出边</span></div>
+                <div style="font-size:0.9rem;">作为西汉核心王朝，与诸侯、边疆、推恩令、匈奴等紧密交织。</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" style="font-size:2rem;">史记</div>
+                <div class="stat-label">📜 连入关系最多的实体</div>
+                <div style="margin: 0.6rem 0;"><span class="entity-badge">44条入边</span></div>
+                <div style="font-size:0.9rem;">本纪、世家、列传、书表等均指向《史记》，百家注疏、版本源流汇聚于此。</div>
+            </div>
+        </div>
+        <div class="grid-2" style="margin-top: 0.5rem;">
+            <div>
+                <h4>🔝 出度前列（影响力辐射）</h4>
+                <ul class="top-entity-list">
+                    <li><span class="name">汉</span><span class="count">81</span></li>
+                    <li><span class="name">项羽</span><span class="count">63</span></li>
+                    <li><span class="name">史记</span><span class="count">45</span></li>
+                    <li><span class="name">秦</span><span class="count">17</span></li>
+                </ul>
+            </div>
+            <div>
+                <h4>🎯 入度前列（被引用枢纽）</h4>
+                <ul class="top-entity-list">
+                    <li><span class="name">史记</span><span class="count">44</span></li>
+                    <li><span class="name">汉</span><span class="count">43</span></li>
+                    <li><span class="name">项羽</span><span class="count">37</span></li>
+                    <li><span class="name">舜</span><span class="count">37</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footnote">“汉”既指朝代又指地域，牵动七国之乱、推恩令、匈奴战和；“项羽”则是楚汉之际最富戏剧性的中心节点。</div>
+    </div>
+
+    <!-- 关键人物与地缘亮点 -->
+    <div class="slide">
+        <div class="slide-header">
+            <h2>🏛️ 核心人物与地缘节点</h2>
+            <p>人物、地点、军事事件的多维互动</p>
+        </div>
+        <div class="grid-2">
+            <div>
+                <h3>👑 高频历史人物</h3>
+                <ul class="top-entity-list">
+                    <li><span class="name">项羽 (项王)</span><span class="count">关联复杂，入度37</span></li>
+                    <li><span class="name">刘邦 (汉王/高祖)</span><span class="count">与项王、韩信、张良构成核心网</span></li>
+                    <li><span class="name">司马迁 (太史公)</span><span class="count">叙事者，连接《史记》与后人评述</span></li>
+                    <li><span class="name">孔子</span><span class="count">儒家思想贯穿礼乐篇章</span></li>
+                </ul>
+            </div>
+            <div>
+                <h3>🗺️ 关键地点</h3>
+                <ul class="top-entity-list">
+                    <li><span class="name">彭城</span><span class="count">项羽都城，楚汉拉锯焦点</span></li>
+                    <li><span class="name">咸阳 / 长安</span><span class="count">秦汉中枢，政治风云</span></li>
+                    <li><span class="name">荥阳</span><span class="count">粮道敖仓，军争要地</span></li>
+                    <li><span class="name">巨鹿</span><span class="count">项羽破釜沉舟，定鼎之战</span></li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <div class="insight-text">
+            📌 关系密度最高的子网络：<strong>楚汉争霸</strong>（项王 - 汉王 - 韩信 - 彭越 - 范增 - 张良），包含战争、分封、谋略等多重关系，构成全图谱最生动的叙事链。
+        </div>
+    </div>
+
+    <!-- 礼乐·宗教·天文：文化维度 -->
+    <div class="slide">
+        <div class="slide-header">
+            <h2>🎵 礼法 · 星象 · 祭祀</h2>
+            <p>“六律为万事根本” — 仪式、音律与天人感应的结构</p>
+        </div>
+        <div class="grid-2">
+            <div>
+                <h4>📖 礼书·乐书·律书</h4>
+                <p>《礼书》《乐书》《律书》等篇章在知识图谱中化为218个仪式节点、72个天文现象节点，将“礼义”“乐舞”“二十八舍”具象化。</p>
+                <div style="margin-top: 0.8rem;">
+                    <span class="entity-badge">五音(宫商角徵羽)</span>
+                    <span class="entity-badge">钟磬·八音</span>
+                    <span class="entity-badge">封禅·郊祀</span>
+                    <span class="entity-badge">荧惑·岁星</span>
+                </div>
+            </div>
+            <div>
+                <h4>🔭 天人合一实例</h4>
+                <ul class="top-entity-list">
+                    <li><span class="name">荧惑</span><span class="count">象征战争、灾异，关联“天欃”“国皇星”</span></li>
+                    <li><span class="name">封禅书</span><span class="count">秦皇汉武祭祀泰山，与“上帝”“五帝”联结</span></li>
+                    <li><span class="name">高祖·太一</span><span class="count">祭祀制度延续，阴阳五行渗透</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="insight-text" style="margin-top: 1rem;">
+            ✨ 从“六不治”医学伦理到“八音克谐”，知识图谱揭示《史记》不仅是史书，更是先秦至汉代的文明百科全书。
+        </div>
+    </div>
+
+    <!-- 动态分析总结：网络特性 -->
+    <div class="slide">
+        <div class="slide-header">
+            <h2>📈 图谱网络特性总结</h2>
+            <p>基于1783条关系与2359个实体的洞察</p>
+        </div>
+        <div class="grid-3">
+            <div class="stat-card">
+                <div class="stat-number">525</div>
+                <div class="stat-label">独特源实体</div>
+                <div style="font-size:0.8rem;">关系发起端丰富</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">1100</div>
+                <div class="stat-label">独特目标实体</div>
+                <div style="font-size:0.8rem;">众多实体被引用</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">实体/关系均有描述</div>
+                <div style="font-size:0.8rem;">完整性极高</div>
+            </div>
+        </div>
+        <div>
+            <h4>🔎 典型关系模式</h4>
+            <p>• <strong>君臣·战争·分封</strong>（项王 → 章邯、汉王 → 韩信）<br>
+               • <strong>学术传承·注疏</strong>（裴骃、司马贞 → 《史记》）<br>
+               • <strong>地理沿革·郡国变迁</strong>（清河国、淮南国 → 推恩令 → 中央集权）<br>
+               • <strong>占星·灾异</strong>（荧惑、天欃 → 兵、丧、饥）<br>
+            </p>
+        </div>
+        <div class="footnote">
+            🌐 人物平均连接度最高的时代集中于秦末汉初（陈胜、项梁、刘邦集团），呈现星形放射结构。
+        </div>
+    </div>
+
+    <!-- 结语 & 未来展望 -->
+    <div class="slide">
+        <div style="text-align: center;">
+            <div style="font-size: 3rem;">🏺</div>
+            <h2 style="font-size: 2rem;">“史家之绝唱，无韵之离骚”</h2>
+            <p style="margin: 1rem 0; font-size: 1.1rem;">通过知识图谱，我们重构了司马迁笔下的宏伟世界——<br>从巨鹿之战的烽火，到甘泉宫的祭祀；从稷下学宫的思想到匈奴单于的弯弓。</p>
+            <div style="background: #e9dbc9; border-radius: 2rem; padding: 1rem; margin: 1rem 0;">
+                ⚡ 未来可探索：基于图谱的时空路径分析、人物社交网络挖掘、自动补全《史记》未言明的隐性关联。
+            </div>
+            <p style="font-size: 0.9rem;">数据基于 《史记》文本实体抽取 + 关系构建 | 实体2359个，关系1783条 | 类型覆盖人物·地点·礼法·天文·政治事件</p>
+            <div style="margin-top: 1rem;">
+                <span class="sigil">太史公曰：通古今之变，成网络之言</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 实体类型饼图 (提取主要8类，其余归入“其他”)
+    const ctx = document.getElementById('entityTypeChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['人物 (747)', '地点 (351)', '仪式/宗教 (218)', '年代标记 (212)', '君主头衔 (183)', '经典文献 (146)', '官职 (133)', '国家 (108)', '其他类型 (261)'],
+            datasets: [{
+                data: [747, 351, 218, 212, 183, 146, 133, 108, 261],
+                backgroundColor: [
+                    '#b5875a', '#d8b26a', '#c49a6c', '#e2bc7c', '#a5713c',
+                    '#ba8b48', '#7e5a36', '#9c714a', '#d1b38c'
+                ],
+                borderWidth: 1,
+                borderColor: '#fff5e6'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: { position: 'right', labels: { font: { size: 11 } } },
+                tooltip: { callbacks: { label: (ctx) => `${ctx.label}: ${ctx.raw} 个 (${((ctx.raw/2359)*100).toFixed(1)}%)` } }
+            }
+        }
+    });
+
+    // 也可额外在控制台输出一些验证，无需额外图表。
+    // 注: 所有数据来自提供的统计总结，完全忠实于给定的实体数、关系数、最高度实体等。
+    console.log('《史记》知识图谱演示文稿加载完成 | 实体总数 2359 | 关系总数 1783');
+</script>
+</body>
+</html>
