@@ -39,8 +39,7 @@ Chinese History Knowledge Graph: Entity and Relation Based Historical Text Minin
 | 其他类型 | 107 | 4.5% |
 > 其他类型包括：军事冲突（43）、族群（21）、材料（11）、朝代（10）、亲属关系（5）、动物（4）等。
 
-
-![实体分布](imgs/01_史记_entity_type_distribution.png =300x300)
+<img src="imgs/01_史记_entity_type_distribution.png" alt="实体分布" width="300">
 
 ---
 
@@ -53,7 +52,7 @@ Chinese History Knowledge Graph: Entity and Relation Based Historical Text Minin
 | **史记** | 45 | 各本纪、世家、列传、书表均指向《史记》，汇聚注疏版本 |
 | **秦** | 17 | 统一六国、制度变革、焚书坑儒等重大事件 |
 
-![实体分布](imgs/01_史记_top_source_entities_only.png =500x300)
+<img src="imgs/01_史记_top_source_entities_only.png" alt="实体分布" width="300">
 
 ### 入度最高（被引用最频繁）
 | 实体 | 入度 | 说明 |
@@ -63,8 +62,7 @@ Chinese History Knowledge Graph: Entity and Relation Based Historical Text Minin
 | **项羽** | 37 | 众多人物、战役、政治事件围绕项羽展开 |
 | **舜** | 37 | 五帝系统核心，禅让、德治典范 |
 
-![实体分布](imgs/01_史记_top_target_entities_only.png)
-
+<img src="imgs/01_史记_top_target_entities_only.png" alt="实体分布" width="300">
 ---
 
 ## 🔗 典型关系示例
