@@ -53,7 +53,7 @@ Chinese History Knowledge Graph: Entity and Relation Based Historical Text Minin
 | **史记** | 45 | 各本纪、世家、列传、书表均指向《史记》，汇聚注疏版本 |
 | **秦** | 17 | 统一六国、制度变革、焚书坑儒等重大事件 |
 
-![实体分布](imgs/01_史记_top_source_entities_only.png)
+![实体分布](imgs/01_史记_top_source_entities_only.png =500x300)
 
 ### 入度最高（被引用最频繁）
 | 实体 | 入度 | 说明 |
