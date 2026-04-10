@@ -40,7 +40,7 @@ Chinese History Knowledge Graph: Entity and Relation Based Historical Text Minin
 > 其他类型包括：军事冲突（43）、族群（21）、材料（11）、朝代（10）、亲属关系（5）、动物（4）等。
 
 
-![实体分布](imgs/01_史记_entity_type_distribution.png)
+![实体分布](imgs/01_史记_entity_type_distribution.png =300x300)
 
 ---
 
